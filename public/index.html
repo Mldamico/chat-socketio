@@ -16,7 +16,10 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      io("http://localhost:3000");
+      const socket = io("http://localhost:3000");
+      socket.on("mensaje-bienvenida", data => {
+        console.log(data);
+      });
     </script>
   </body>
 </html>
