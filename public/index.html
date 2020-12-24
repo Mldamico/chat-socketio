@@ -26,11 +26,16 @@
           />
         </div>
         <div class="col-4">
-          <button class="btn btn-primary">Enviar</button>
+          <button type="submit" class="btn btn-primary">Enviar</button>
         </div>
       </div>
     </form>
 
+    <div class="row">
+      <div class="col">
+        <ul id="misMensajes" class="mt-2"></ul>
+      </div>
+    </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"
       integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ=="
@@ -38,15 +43,22 @@
     ></script>
     <script>
       const socket = io("http://localhost:3000");
-      socket.on("mensaje-bienvenida", data => {
-        console.log(data);
+      const formulario = document.querySelector("#formulario");
+      const mensajes = document.getElementById("misMensajes");
+      const txtMensaje = document.getElementById("txtMensaje");
+
+      formulario.addEventListener("submit", e => {
+        e.preventDefault();
+        const nuevoMensaje = txtMensaje.value;
+        socket.emit("mensaje-to-server", { texto: nuevoMensaje });
       });
-      setTimeout(() => {
-        socket.emit("mensaje-cliente", {
-          msg: "cliente",
-          nombre: "probando"
-        });
-      }, 2000);
+
+      socket.on("mensaje-from-server", data => {
+        mensajes.innerHTML += `<li>${data.texto}</li>`;
+      });
+      // socket.on("mensaje-bienvenida", data => {
+      //   console.log(data);
+      // });
     </script>
   </body>
 </html>
