@@ -16,10 +16,16 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      const socket = io("http://localhost:3000");
-      socket.on("mensaje-bienvenida", data => {
+      const socket = io('http://localhost:3000');
+      socket.on('mensaje-bienvenida', (data) => {
         console.log(data);
       });
+      setTimeout(() => {
+        socket.emit('mensaje-cliente', {
+          msg: 'cliente',
+          nombre: 'probando',
+        });
+      }, 2000);
     </script>
   </body>
 </html>
